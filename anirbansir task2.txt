@@ -1,0 +1,37 @@
+select * from employee
+
+create table record2(empno int,age float,education float,dept nvarchar(255),jobrole nvarchar(255))
+-----use merge for insert
+merge record2 as target
+using employee as source
+on source.employeenumber=target.empno
+when not matched by target then 
+insert(empno,age,education,dept,jobrole)
+       values
+	   (source.employeenumber,source.age,source.education,source.department,source.jobrole);
+        select*from record2 where education='4';
+
+-----use merge for target
+merge record2 as target
+using employee as source
+on source.employeenumber=target.empno
+when matched then update set
+target.age=source.age;
+
+update employee set age=25 where
+education='4';
+
+----use for delete
+merge record2 as target
+using employee as source
+on source.employeenumber=target.empno
+when not matched by source then 
+delete;
+
+insert into record2 values(2002,25,4,'HR','emp')
+
+select*from record2
+
+
+
+
